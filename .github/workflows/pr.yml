@@ -22,7 +22,6 @@ jobs:
     - name: Build and tag image
       run: |
         docker build -t lseg-feature:latest .
-        docker push lseg-feature:latest
     
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.28.0
