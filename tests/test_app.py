@@ -21,6 +21,9 @@ class AppTests(unittest.TestCase):
         self.assertIn(b"stellar.jpg", response.data)
 
         response = self.app.get("/")
+        self.assertIn(b"next-dog.png", response.data)
+
+        response = self.app.get("/")
         self.assertIn(b"lunar.jpg", response.data)
 
 if __name__ == "__main__":
