@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.13-slim
+FROM public.ecr.aws/lambda/python:3.13
 
 WORKDIR /app 
 COPY . /app
