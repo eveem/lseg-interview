@@ -1,0 +1,35 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Unittest
+      run: | 
+        pip install -r requirements.txt
+        python -m unittest discover -s tests
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Build and tag image
+      run: |
+        docker build -t lseg-feature:latest .
+        docker push lseg-feature:latest
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        image-ref: lseg-feature:latest
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
