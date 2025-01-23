@@ -59,4 +59,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
-            docker run -p ${{ secrets.APP_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -p ${{ secrets.APP_PORT }}:${{ secrets.APP_PORT }} -d ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
