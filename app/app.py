@@ -6,6 +6,7 @@ dogs = [
     { "name": "Lunar", "image": "lunar.jpg" },
     { "name": "Solar", "image": "solar.jpg" },
     { "name": "Stellar", "image": "stellar.jpg" },
+    { "name": "Next dog?", "image": "next-dog.png"}
 ]
 
 current_dog_index = 0
