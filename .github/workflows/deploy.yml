@@ -61,7 +61,7 @@ jobs:
             docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop hello-dog-dev || true
             docker rm hello-dog-dev || true
-            docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.DEV_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
       
   deploy-prod:
     runs-on: ubuntu-24.04
@@ -78,4 +78,4 @@ jobs:
             docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop hello-dog-prod || true
             docker rm hello-dog-prod || true
-            docker run -d --name hello-dog-prod -p ${{ secrets.PROD_PORT }}:${{ secrets.PROD_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d --name hello-dog-prod -p ${{ secrets.PROD_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
