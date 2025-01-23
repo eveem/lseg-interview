@@ -1,3 +1,1 @@
 Flask==3.1.0
-aws-lambda-powertools==3.4.1
-aws_lambda_wsgi==0.0.6
