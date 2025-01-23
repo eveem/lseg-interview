@@ -28,13 +28,11 @@
 from flask import Flask, jsonify
 from aws_lambda_wsgi import response
 
-# Initialize Flask app
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return jsonify(message="Hello, World!")
 
-# AWS Lambda function handler
 def lambda_handler(event, context):
     return response(app, event, context)
