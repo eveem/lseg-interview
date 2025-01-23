@@ -47,49 +47,45 @@ jobs:
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:latest
   
-  security-scan:
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          image-ref: ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        image-ref: ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
 
   deploy-dev:
     runs-on: ubuntu-24.04
     needs: security-scan
     steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
-            docker stop hello-dog-dev || true
-            docker rm hello-dog-dev || true
-            docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          docker stop hello-dog-dev || true
+          docker rm hello-dog-dev || true
+          docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
       
   deploy-prod:
     runs-on: ubuntu-24.04
     environment: prod
     needs: [build, deploy-dev]
     steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
-            docker stop hello-dog-prod || true
-            docker rm hello-dog-prod || true
-            docker run -d --name hello-dog-prod -p ${{ secrets.PROD_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          docker stop hello-dog-prod || true
+          docker rm hello-dog-prod || true
+          docker run -d --name hello-dog-prod -p ${{ secrets.PROD_PORT }}:${{ secrets.APP_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
