@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
         docker push $REGISTRY/$REPOSITORY:latest
   
   deploy-dev:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Deploy to EC2
@@ -64,7 +64,7 @@ jobs:
             docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.DEV_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
       
   deploy-prod:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: prod
     needs: [build, deploy-dev]
     steps:
