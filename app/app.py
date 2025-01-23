@@ -11,6 +11,7 @@ dogs = [
 ]
 
 current_dog_index = 0
+logger = Logger()
 
 @app.route("/")
 def home():
