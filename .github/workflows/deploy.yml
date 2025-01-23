@@ -62,3 +62,20 @@ jobs:
             docker stop hello-dog-dev || true
             docker rm hello-dog-dev || true
             docker run -d --name hello-dog-dev -p ${{ secrets.DEV_PORT }}:${{ secrets.DEV_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+      
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: [build, deploy-dev]
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            docker pull ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+            docker stop hello-dog-prod || true
+            docker rm hello-dog-prod || true
+            docker run -d --name hello-dog-prod -p ${{ secrets.PROD_PORT }}:${{ secrets.PROD_PORT }} ${{ secrets.AWS_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
