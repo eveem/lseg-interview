@@ -63,4 +63,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             docker pull $REGISTRY/$REPOSITORY:latest
-            docker run -p $APP_PORT:$APP_PORT $REGISTRY/$REPOSITORY:latest
+            docker run -p $PORT:$PORT $REGISTRY/$REPOSITORY:latest
