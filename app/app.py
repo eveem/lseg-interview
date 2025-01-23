@@ -37,5 +37,4 @@ def hello_world():
 
 # AWS Lambda function handler
 def lambda_handler(event, context):
-    from aws_lambda_wsgi import make_lambda_handler
-    return make_lambda_handler(app)(event, context)
+    return response(app, event, context)
