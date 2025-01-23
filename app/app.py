@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+from aws_lambda_powertools.event_handler import api_gateway
+from aws_lambda_powertools.logging import Logger
 
 app = Flask(__name__)
 
