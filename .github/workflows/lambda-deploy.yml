@@ -43,7 +43,7 @@ jobs:
         IMAGE_TAG: ${{ env.SHORT_SHA }}
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest"
+        docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:latest
   
