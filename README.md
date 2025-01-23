@@ -17,3 +17,8 @@ python3 -m unittest discover -s tests
 http://18.141.183.168:5000/
 
 http://18.141.183.168:5005/
+
+### Bonus Points
+- **Secure way to use secrets**: Use GitHub Actions secrets that can be written to but cannot read back or modified
+- **Quality gate to pass/fail build on scan results**: Added Trivy for security scanning. If the scan passes, the build will automatically proceed to deploy-dev; if not, the run will fail.
+- **Standard branch environment deployment control**: The `main` branch is used for storing production-ready code, and our workflow trigger every time we have a commit. We also use `feature/xxxyyy` branches for feature development, which are short-lived.
