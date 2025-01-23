@@ -17,5 +17,7 @@ def home():
     current_dog_index = (current_dog_index + 1) % len(dogs)
     return render_template("index.html", dog_name=dog["name"], dog_image=dog["image"])
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+def lambda_handler(event, context):
+    handler = api_gateway.ApiGatewayHandler()
+    logger.info(f"Received event: {event}")
+    return handler.handle(event, context)
